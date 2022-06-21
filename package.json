@@ -1,0 +1,9 @@
+{
+  "name": "KRYPT-A-Blockchain-App",
+  "version": "1.0.0",
+  "description": "A Web-based Blockchain Application",
+  "main": "index.js",
+  "repository": "git@github.com:Sambit99/KRYPT-A-Blockchain-App.git",
+  "author": "Sambit99 <sambitkumar75@gmail.com>",
+  "license": "MIT"
+}

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.4;
 
 contract Transactions{
-    address manager;
+    address public manager;
     uint256 transactionCount;
 
     constructor(){
@@ -22,7 +22,7 @@ contract Transactions{
 
     TransferStruct[] allTransactions;
 
-    function transferMoney(address payable  _reciever,uint256  _amount,string memory  _message,string memory _keyword) public {
+    function transferMoney(address payable _reciever,uint256 _amount,string memory _message,string memory _keyword) public {
         transactionCount += 1;
 
         TransferStruct memory newTransaction = TransferStruct({
@@ -37,6 +37,10 @@ contract Transactions{
         allTransactions.push(newTransaction);
         emit Transfer(msg.sender,_reciever,_amount,_message,block.timestamp,_keyword);
     }
+
+    // function getManager() public view returns(address){
+    //     return manager;
+    // }
 
     function getAllTransactions() public view returns(TransferStruct[] memory){
         return allTransactions;

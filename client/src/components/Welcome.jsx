@@ -1,6 +1,8 @@
 import { AiFillPlayCircle } from "react-icons/ai";
 import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
+import React, { useContext } from "react";
+import { TransactionContext } from "../context/TransactionContext";
 
 import { Loader } from "./";
 
@@ -19,7 +21,24 @@ const Input = ({ placeholder, name, type, value, handleChange }) => (
 );
 
 const Welcome = () => {
-  const connectWallet = () => {};
+  const {
+    connectWallet,
+    currentAccount,
+    formData,
+    handleChange,
+    sendTransaction,
+  } = useContext(TransactionContext);
+  // const connectWallet = () => {};
+
+  const handleSubmit = (e) => {
+    const { addressTo, amount, keyword, message } = formData;
+
+    e.preventDefault();
+
+    if (!addressTo || !amount || !keyword || !message) return;
+
+    sendTransaction();
+  };
 
   return (
     <div className="flex w-full justify-center items-center">
@@ -32,14 +51,18 @@ const Welcome = () => {
             Explore the crypto world. Buy and sell cryptocurrencies easily on
             Krypto.
           </p>
-          <button
-            type="button"
-            onClick={connectWallet}
-            className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
-          >
-            {/* <AiFillPlayCircle className="text-white mr-2" /> */}
-            <p className="text-white text-base font-semibold">Connect Wallet</p>
-          </button>
+          {!currentAccount && (
+            <button
+              type="button"
+              onClick={connectWallet}
+              className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
+            >
+              {/* <AiFillPlayCircle className="text-white mr-2" /> */}
+              <p className="text-white text-base font-semibold">
+                Connect Wallet
+              </p>
+            </button>
+          )}
           <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
             <div className={`rounded-tl-2xl ${companyCommonStyles}`}>
               Reliability
@@ -67,7 +90,11 @@ const Welcome = () => {
                 <BsInfoCircle fontSize={17} color="#fff" />
               </div>
               <div>
-                <p className="text-white font-light text-sm">0x1wed2w2d8q2w</p>
+                <p className="text-white font-light text-sm">
+                  {currentAccount.slice(0, 5).toUpperCase() +
+                    "..." +
+                    currentAccount.slice(-5).toUpperCase()}
+                </p>
                 <p className="text-white font-semibold text-lg mt-1">
                   Ethereum
                 </p>
@@ -75,16 +102,37 @@ const Welcome = () => {
             </div>
           </div>
           <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
-            <Input placeholder="Address To" name="addressTo" type="text" />
-            <Input placeholder="Amount (ETH)" name="amount" type="number" />
-            <Input placeholder="Keyword (Gif)" name="keyword" type="text" />
-            <Input placeholder="Enter Message" name="message" type="text" />
+            <Input
+              placeholder="Address To"
+              name="addressTo"
+              type="text"
+              handleChange={handleChange}
+            />
+            <Input
+              placeholder="Amount (ETH)"
+              name="amount"
+              type="number"
+              handleChange={handleChange}
+            />
+            <Input
+              placeholder="Keyword (Gif)"
+              name="keyword"
+              type="text"
+              handleChange={handleChange}
+            />
+            <Input
+              placeholder="Enter Message"
+              name="message"
+              type="text"
+              handleChange={handleChange}
+            />
             <div className="h-[1px] w-full bg-gray-400 my-2">
               {false ? (
                 <Loader />
               ) : (
                 <button
                   type="button"
+                  onClick={handleSubmit}
                   className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
                 >
                   Send now

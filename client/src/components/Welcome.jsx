@@ -3,6 +3,7 @@ import { SiEthereum } from "react-icons/si";
 import { BsInfoCircle } from "react-icons/bs";
 import React, { useContext } from "react";
 import { TransactionContext } from "../context/TransactionContext";
+import { shortenAddress } from "../utils/shortenAddress";
 
 import { Loader } from "./";
 
@@ -27,6 +28,7 @@ const Welcome = () => {
     formData,
     handleChange,
     sendTransaction,
+    isLoading,
   } = useContext(TransactionContext);
   // const connectWallet = () => {};
 
@@ -91,9 +93,7 @@ const Welcome = () => {
               </div>
               <div>
                 <p className="text-white font-light text-sm">
-                  {currentAccount.slice(0, 5).toUpperCase() +
-                    "..." +
-                    currentAccount.slice(-5).toUpperCase()}
+                  {shortenAddress(currentAccount)}
                 </p>
                 <p className="text-white font-semibold text-lg mt-1">
                   Ethereum
@@ -126,19 +126,18 @@ const Welcome = () => {
               type="text"
               handleChange={handleChange}
             />
-            <div className="h-[1px] w-full bg-gray-400 my-2">
-              {false ? (
-                <Loader />
-              ) : (
-                <button
-                  type="button"
-                  onClick={handleSubmit}
-                  className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
-                >
-                  Send now
-                </button>
-              )}
-            </div>
+            <div className="h-[1px] w-full bg-gray-400 my-2" />
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
+              >
+                Send now
+              </button>
+            )}
           </div>
         </div>
       </div>
